@@ -5,6 +5,7 @@ date: "2023-06-28"
 output: html_document
 ---
 Reading in Data, you should really only need tidyverse for reading in CSVs and dplyr for manipulating txt/csv files. The rest of the packages are for mapping out these fields, which can easily be done using the cleanRfield package. If you just want to use this for data cleaning, comment out the other packages. 
+
 ```{r}
 library(tidyverse)
 library(dplyr)
@@ -23,6 +24,7 @@ library(tmap) # used for visualization
 DF<-read.csv("E:/USDAData/PdS Research Station Yield Data (SIPs Project)-selected/2016/1900_Corn_1.csv")
 colnames(DF) #checking that the latitude is the first column and longitude is the second column
 ```
+
 ```{r}
 # Read the CSV file and select columns necessary for agleader advanced format in order
 yield_data <- read.csv("C:/Users/jesse/Documents/PdS Research Station Yield Data (SIPs Project)-selected/2016/1900_Corn_1.csv") %>%
