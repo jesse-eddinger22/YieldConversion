@@ -1,0 +1,79 @@
+---
+title: "YieldEditorFormatting"
+author: "Jesse Eddinger"
+date: "2023-06-28"
+output: html_document
+---
+Reading in Data, you should really only need tidyverse for reading in CSVs and dplyr for manipulating txt/csv files. The rest of the packages are for mapping out these fields, which can easily be done using the cleanRfield package. If you just want to use this for data cleaning, comment out the other packages. 
+```{r setup, include=FALSE}
+library(tidyverse)
+library(dplyr)
+library(cleanRfield) # This package and all below used for mapping
+library(raster) # loading in and manipulating raster data
+library(rgdal) 
+library(terra)
+library(sf)
+library(gstat) # used to make the idw model
+library(sp) # used to prepare the raster grid with spsample function
+library(tmap) # used for visualization
+```
+
+```{r}
+# reading in the .csv file
+DF<-read.csv("E:/USDAData/PdS Research Station Yield Data (SIPs Project)-selected/2016/1900_Corn_1.csv")
+colnames(DF) #checking that the latitude is the first column and longitude is the second column
+```
+```{r}
+# Read the CSV file and select columns necessary for agleader advanced format in order
+yield_data <- read.csv("C:/Users/jesse/Documents/PdS Research Station Yield Data (SIPs Project)-selected/2016/1900_Corn_1.csv") %>%
+  dplyr::select(Longitude,Latitude, Crop.Flw.M..lb.s., Distance.ft., Swth.Wdth.ft., Moisture..., Pass.Num, Field, Product, Elevation.ft.)
+
+# Add a new column "Cycle Period" with 1, "GPSTime" with 0
+df_added <- yield_data %>%
+  mutate(`GPSTime` = 0,`Cycle Period` = 1)
+
+# Rename the selected columns so that Yield Editor can read them
+
+col_names <- c("Latitude", "Longitude", "Grain Mass Flow", "GPS Time", "Cycle Period",
+               "Distance Traveled in Cycle Period", "Effective Swath Width", "Moisture Content",
+               "Pass Number", "Field ID", "Grain Type", "Altitude")
+print(df_added)
+
+```
+
+
+```{r}
+# Reorder Columns
+data_formatted <- df_added %>%
+  relocate(`Cycle Period`, .before = Distance.ft.) %>%
+  relocate(GPSTime, .after = Crop.Flw.M..lb.s.)
+
+data_formatted
+
+```
+
+```{r}
+# Convert Distance.ft. and Swth.Wdth.ft. columns from feet to inches
+converted <- data_formatted %>%
+  mutate(Distance.in. = Distance.ft. * 12, Swth.Wdth.in. = Swth.Wdth.ft. * 12) %>%
+  dplyr::select(-Distance.ft., -Swth.Wdth.ft.)
+
+converted
+```
+
+
+```{r}
+finaldf <- converted %>%
+  relocate(Distance.in., .after = `Cycle Period`) %>%
+  relocate(Swth.Wdth.in., .before = Moisture... )
+
+finaldf
+```
+
+
+```{r}
+# Export formatted_data dataframe to a CSV file in your directory, rename file
+write.csv(finaldf, file = "1900_Corn_agleaderadvanced.csv", row.names = FALSE)
+```
+
+
