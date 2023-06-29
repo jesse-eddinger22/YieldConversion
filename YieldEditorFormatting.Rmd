@@ -13,10 +13,10 @@ library(cleanRfield) # This package and all below used for mapping
 library(raster) # loading in and manipulating raster data
 library(rgdal) 
 library(terra)
-library(sf)
-library(gstat) # used to make the idw model
-library(sp) # used to prepare the raster grid with spsample function
-library(tmap) # used for visualization
+#library(sf)
+#library(gstat) # used to make the idw model
+#library(sp) # used to prepare the raster grid with spsample function
+#library(tmap) # used for visualization
 ```
 
 ```{r}
