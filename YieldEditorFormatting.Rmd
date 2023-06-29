@@ -21,13 +21,13 @@ library(terra)
 
 ```{r}
 # reading in the .csv file
-DF<-read.csv("E:/USDAData/PdS Research Station Yield Data (SIPs Project)-selected/2016/1900_Corn_1.csv")
+DF<-read.csv("C:/Users/jesse/Desktop/USDA Project/Data/txt/3600/3600_2018_Corn_1.csv")
 colnames(DF) #checking that the latitude is the first column and longitude is the second column
 ```
 
 ```{r}
 # Read the CSV file and select columns necessary for agleader advanced format in order
-yield_data <- read.csv("C:/Users/jesse/Documents/PdS Research Station Yield Data (SIPs Project)-selected/2016/1900_Corn_1.csv") %>%
+yield_data <- read.csv("C:/Users/jesse/Desktop/USDA Project/Data/txt/3600/3600_2018_Corn_1.csv") %>%
   dplyr::select(Longitude,Latitude, Crop.Flw.M..lb.s., Distance.ft., Swth.Wdth.ft., Moisture..., Pass.Num, Field, Product, Elevation.ft.)
 
 # Add a new column "Cycle Period" with 1, "GPSTime" with 0
@@ -75,7 +75,7 @@ finaldf
 
 ```{r}
 # Export formatted_data dataframe to a CSV file in your directory, rename file
-write.csv(finaldf, file = "1900_Corn_agleaderadvanced.csv", row.names = FALSE)
+write.csv(finaldf, file = "3600_2018_Corn_1.csv_agleaderadvanced.csv", row.names = FALSE)
 ```
 
 
